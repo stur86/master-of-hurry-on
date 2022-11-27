@@ -1,0 +1,49 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "Object",
+"class": &"StarCatalog",
+"language": &"GDScript",
+"path": "res://scripts/StarCatalog.gd"
+}, {
+"base": "Area2D",
+"class": &"StarSystem",
+"language": &"GDScript",
+"path": "res://scripts/StarSystem.gd"
+}]
+_global_script_class_icons={
+"StarCatalog": "",
+"StarSystem": ""
+}
+
+[application]
+
+config/name="Master Of Hurry-On"
+run/main_scene="res://scenes/logo_screen.tscn"
+config/features=PackedStringArray("4.0", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Switchboard="*res://scripts/Switchboard.gd"
+LevelParameters="*res://scripts/LevelParameters.gd"
+EmpireManager="*res://scripts/EmpireManager.gd"
+
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=480
+window/size/resizable=false
+window/stretch/mode="canvas_items"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

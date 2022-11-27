@@ -1,0 +1,6 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://i783vnpbbdc5"]
+
+[ext_resource type="FontFile" uid="uid://dg3xjhrjk1868" path="res://fonts/PrStart.ttf" id="1_dinyu"]
+
+[resource]
+font = ExtResource("1_dinyu")

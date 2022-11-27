@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://cugdnxbcwx0dn"]
+
+[ext_resource type="StyleBox" uid="uid://ddp6tojcqv475" path="res://styles/hud_style.tres" id="1_54bij"]
+[ext_resource type="FontFile" uid="uid://dg3xjhrjk1868" path="res://fonts/PrStart.ttf" id="1_h8175"]
+
+[resource]
+default_font = ExtResource("1_h8175")
+default_font_size = 16
+Panel/styles/panel = ExtResource("1_54bij")

@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c4tvttkq7jsqc"]
+
+[ext_resource type="Shader" path="res://graphics/hatch_area_material.gdshader" id="1_nraby"]
+
+[resource]
+shader = ExtResource("1_nraby")
+shader_parameter/tfac = 4.0

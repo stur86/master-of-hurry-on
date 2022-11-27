@@ -1,0 +1,349 @@
+[gd_scene load_steps=19 format=3 uid="uid://cb3ldkpk02t5b"]
+
+[ext_resource type="Script" path="res://scripts/BackgroundLayer.gd" id="1_qihme"]
+[ext_resource type="AudioStream" uid="uid://bt2jppc28cuna" path="res://sound/20SecondsToGlory.mp3" id="1_tdg8w"]
+[ext_resource type="Theme" uid="uid://cugdnxbcwx0dn" path="res://styles/hud_theme.tres" id="2_aukif"]
+[ext_resource type="Script" path="res://scripts/StarCamera.gd" id="2_n7evb"]
+[ext_resource type="Texture2D" uid="uid://1nsclqxcq4j4" path="res://sprites/ship_icon.png" id="3_rodlt"]
+[ext_resource type="Script" path="res://scripts/Galaxy.gd" id="3_wku2u"]
+[ext_resource type="LabelSettings" uid="uid://i783vnpbbdc5" path="res://fonts/heads_up_label.tres" id="4_uqviv"]
+[ext_resource type="Texture2D" uid="uid://4u7vg61hj1r0" path="res://sprites/star_3.png" id="5_7p4fp"]
+[ext_resource type="Texture2D" uid="uid://nlqc5cyk7p4i" path="res://sprites/victory_icon.png" id="6_kvjpv"]
+[ext_resource type="Script" path="res://scripts/BattlePreview.gd" id="7_v7u03"]
+[ext_resource type="Texture2D" uid="uid://davg412okc164" path="res://sprites/defeat_icon.png" id="9_0y65b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08r2q"]
+
+[sub_resource type="GDScript" id="GDScript_fedv6"]
+script/source = "extends Panel
+
+
+func _on_mouse_entered():
+	Switchboard.start_scrolling.emit(Vector2.LEFT)
+
+func _on_mouse_exited():
+	Switchboard.start_scrolling.emit(Vector2.ZERO)
+"
+
+[sub_resource type="GDScript" id="GDScript_b46j3"]
+script/source = "extends Panel
+
+
+func _on_mouse_entered():
+	Switchboard.start_scrolling.emit(Vector2.RIGHT)
+
+func _on_mouse_exited():
+	Switchboard.start_scrolling.emit(Vector2.ZERO)
+
+"
+
+[sub_resource type="GDScript" id="GDScript_rr2ey"]
+script/source = "extends Panel
+
+
+func _on_mouse_entered():
+	Switchboard.start_scrolling.emit(Vector2.UP)
+
+func _on_mouse_exited():
+	Switchboard.start_scrolling.emit(Vector2.ZERO)
+
+"
+
+[sub_resource type="GDScript" id="GDScript_v4vud"]
+script/source = "extends Panel
+
+
+func _on_mouse_entered():
+	Switchboard.start_scrolling.emit(Vector2.DOWN)
+
+func _on_mouse_exited():
+	Switchboard.start_scrolling.emit(Vector2.ZERO)
+
+"
+
+[sub_resource type="GDScript" id="GDScript_vpd61"]
+script/source = "extends HBoxContainer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	EmpireManager.tick.connect(Callable(
+		self, \"tick\")
+	)
+	
+func tick():
+
+	$ShipLevel.text = \"%d/%d (+%d)\" % [
+		EmpireManager.empire_fleet_size, 
+		EmpireManager.empire_fleet_capacity,
+		EmpireManager.empire_growth_rate
+	]
+"
+
+[sub_resource type="GDScript" id="GDScript_dwoh1"]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	EmpireManager.tick.connect(Callable(
+		self, \"tick\"
+	))
+
+func tick():
+	text = \"%d AD\" % [EmpireManager.year,]
+"
+
+[node name="MainScene" type="Node2D"]
+
+[node name="MainTheme" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_tdg8w")
+autoplay = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.25, 0.25)
+script = ExtResource("1_qihme")
+
+[node name="StarCamera" type="Camera2D" parent="."]
+current = true
+script = ExtResource("2_n7evb")
+scroll_speed = 150.0
+
+[node name="Galaxy" type="Node2D" parent="."]
+script = ExtResource("3_wku2u")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_aukif")
+
+[node name="BattlePreview" type="Panel" parent="CanvasLayer/GUI"]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -299.0
+offset_right = -15.0
+offset_bottom = -19.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("7_v7u03")
+victory_color = Color(1, 0.858824, 0, 1)
+defeat_color = Color(0.643137, 0.486275, 0.72549, 1)
+
+[node name="SystemName" type="Label" parent="CanvasLayer/GUI/BattlePreview"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 14.0
+offset_bottom = 33.0
+grow_horizontal = 2
+text = "Solanasabi"
+label_settings = ExtResource("4_uqviv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SystemIcon" type="TextureRect" parent="CanvasLayer/GUI/BattlePreview"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.5
+offset_top = -91.0
+offset_right = 18.5
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_7p4fp")
+
+[node name="Power" type="GridContainer" parent="CanvasLayer/GUI/BattlePreview"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 11.0
+offset_top = -28.0
+offset_right = -13.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/GUI/BattlePreview/Power"]
+custom_minimum_size = Vector2(16, 16)
+offset_right = 16.0
+offset_bottom = 19.0
+texture = ExtResource("3_rodlt")
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="CanvasLayer/GUI/BattlePreview/Power"]
+custom_minimum_size = Vector2(150, 0)
+offset_left = 20.0
+offset_right = 170.0
+offset_bottom = 19.0
+text = "12 (+4)"
+horizontal_alignment = 2
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="BattleCost" type="GridContainer" parent="CanvasLayer/GUI/BattlePreview"]
+modulate = Color(0.678431, 0.137255, 0.137255, 1)
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 11.0
+offset_top = 12.0
+offset_right = -13.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/GUI/BattlePreview/BattleCost"]
+custom_minimum_size = Vector2(16, 16)
+offset_right = 16.0
+offset_bottom = 19.0
+texture = ExtResource("9_0y65b")
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="CanvasLayer/GUI/BattlePreview/BattleCost"]
+custom_minimum_size = Vector2(150, 0)
+offset_left = 20.0
+offset_right = 170.0
+offset_bottom = 19.0
+text = "1+3"
+horizontal_alignment = 2
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Outcome" type="Label" parent="CanvasLayer/GUI/BattlePreview"]
+self_modulate = Color(1, 0.858824, 0, 1)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -30.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Victory"
+label_settings = ExtResource("4_uqviv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/GUI/BattlePreview/Outcome"]
+offset_left = 76.0
+offset_top = -52.0
+offset_right = 116.0
+offset_bottom = -12.0
+texture = ExtResource("6_kvjpv")
+
+[node name="ScrollLeft" type="Panel" parent="CanvasLayer/GUI"]
+custom_minimum_size = Vector2(40, 0)
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 40.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_08r2q")
+script = SubResource("GDScript_fedv6")
+
+[node name="ScrollRight" type="Panel" parent="CanvasLayer/GUI"]
+custom_minimum_size = Vector2(40, 0)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_08r2q")
+script = SubResource("GDScript_b46j3")
+
+[node name="ScrollTop" type="Panel" parent="CanvasLayer/GUI"]
+custom_minimum_size = Vector2(0, 72)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_08r2q")
+script = SubResource("GDScript_rr2ey")
+
+[node name="ScrollBottom" type="Panel" parent="CanvasLayer/GUI"]
+custom_minimum_size = Vector2(0, 40)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_08r2q")
+script = SubResource("GDScript_v4vud")
+
+[node name="HUDBar" type="Panel" parent="CanvasLayer/GUI"]
+custom_minimum_size = Vector2(0, 32)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+
+[node name="ShipStatus" type="HBoxContainer" parent="CanvasLayer/GUI/HUDBar"]
+offset_left = 13.0
+offset_right = 239.0
+offset_bottom = 31.0
+theme_override_constants/separation = 10
+script = SubResource("GDScript_vpd61")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/GUI/HUDBar/ShipStatus"]
+offset_right = 16.0
+offset_bottom = 31.0
+
+[node name="ShipIcon" type="TextureRect" parent="CanvasLayer/GUI/HUDBar/ShipStatus/AspectRatioContainer"]
+custom_minimum_size = Vector2(16, 16)
+offset_top = 7.5
+offset_right = 16.0
+offset_bottom = 23.5
+texture = ExtResource("3_rodlt")
+
+[node name="ShipLevel" type="Label" parent="CanvasLayer/GUI/HUDBar/ShipStatus"]
+custom_minimum_size = Vector2(200, 0)
+offset_left = 26.0
+offset_top = 6.0
+offset_right = 226.0
+offset_bottom = 25.0
+text = "75/100 (+3)"
+label_settings = ExtResource("4_uqviv")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Date" type="Label" parent="CanvasLayer/GUI/HUDBar"]
+custom_minimum_size = Vector2(200, 0)
+offset_left = 434.0
+offset_top = 6.0
+offset_right = 634.0
+offset_bottom = 25.0
+text = "2200 AD"
+label_settings = ExtResource("4_uqviv")
+horizontal_alignment = 2
+vertical_alignment = 2
+script = SubResource("GDScript_dwoh1")
+
+[connection signal="mouse_entered" from="CanvasLayer/GUI/ScrollLeft" to="CanvasLayer/GUI/ScrollLeft" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GUI/ScrollLeft" to="CanvasLayer/GUI/ScrollLeft" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/GUI/ScrollRight" to="CanvasLayer/GUI/ScrollRight" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GUI/ScrollRight" to="CanvasLayer/GUI/ScrollRight" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/GUI/ScrollTop" to="CanvasLayer/GUI/ScrollTop" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GUI/ScrollTop" to="CanvasLayer/GUI/ScrollTop" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/GUI/ScrollBottom" to="CanvasLayer/GUI/ScrollBottom" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/GUI/ScrollBottom" to="CanvasLayer/GUI/ScrollBottom" method="_on_mouse_exited"]

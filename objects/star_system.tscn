@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://mknptwb7nil4"]
+
+[ext_resource type="Script" path="res://scripts/StarSystem.gd" id="1_ggmfm"]
+[ext_resource type="Material" uid="uid://c4tvttkq7jsqc" path="res://graphics/hatch_area_material.tres" id="2_k7313"]
+[ext_resource type="Texture2D" uid="uid://dmy48fb4m2squ" path="res://sprites/frame.png" id="3_d66dw"]
+[ext_resource type="Texture2D" uid="uid://dmwnpjaxk8q7h" path="res://sprites/star_1.png" id="4_c01yo"]
+[ext_resource type="AudioStream" uid="uid://c4h11dyhkn477" path="res://sound/explosion.wav" id="5_bk8yf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mt33t"]
+radius = 20.0
+
+[node name="StarSystem" type="Area2D"]
+position = Vector2(75, 91)
+script = ExtResource("1_ggmfm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mt33t")
+metadata/_edit_lock_ = true
+
+[node name="ConquestArea" type="Sprite2D" parent="."]
+visible = false
+material = ExtResource("2_k7313")
+scale = Vector2(2, 2)
+texture = ExtResource("3_d66dw")
+region_rect = Rect2(0, 0, 5, 5)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("4_c01yo")
+metadata/_edit_lock_ = true
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_bk8yf")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

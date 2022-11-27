@@ -1,0 +1,161 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwj80dtvmshlb"]
+
+[ext_resource type="Theme" uid="uid://cugdnxbcwx0dn" path="res://styles/hud_theme.tres" id="1_pwm4v"]
+[ext_resource type="Texture2D" uid="uid://h0k68mag025i" path="res://sprites/victory_screen.png" id="2_fxm05"]
+
+[sub_resource type="GDScript" id="GDScript_k2ulh"]
+script/source = "extends Control
+
+const victory_bkg = preload(\"res://sprites/victory_screen.png\")
+const defeat_bkg = preload(\"res://sprites/defeat_screen.png\")
+
+func _ready():
+	
+	var y = EmpireManager.year
+	var s = EmpireManager.empire_systems.size()
+	var f = EmpireManager.empire_fleet_capacity
+	
+	$Results/VBoxContainer/YearRow/Year.text = str(y)
+	$Results/VBoxContainer/SystemsRow/Systems.text = str(s)
+	$Results/VBoxContainer/FleetRow/Fleet.text = str(f)
+	
+	if y >= EmpireManager.end_year:
+		$Background.texture = victory_bkg
+	else:
+		$Background.texture = defeat_bkg
+
+
+func _on_button_pressed():
+	# Start new game
+	get_tree().change_scene_to_file(\"res://scenes/main_scene.tscn\")
+"
+
+[node name="EndGameScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pwm4v")
+script = SubResource("GDScript_k2ulh")
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(4, 4)
+texture = ExtResource("2_fxm05")
+
+[node name="Results" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -150.0
+offset_right = 110.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.772549)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Results"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="GameOver" type="Label" parent="Results/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+offset_right = 210.0
+offset_bottom = 30.0
+grow_horizontal = 2
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="YearRow" type="HSplitContainer" parent="Results/VBoxContainer"]
+offset_top = 62.0
+offset_right = 210.0
+offset_bottom = 81.0
+
+[node name="YearLabel" type="Label" parent="Results/VBoxContainer/YearRow"]
+offset_right = 80.0
+offset_bottom = 19.0
+grow_horizontal = 2
+text = "Year:"
+vertical_alignment = 2
+
+[node name="Year" type="Label" parent="Results/VBoxContainer/YearRow"]
+offset_left = 92.0
+offset_right = 210.0
+offset_bottom = 19.0
+grow_horizontal = 2
+text = "2400"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="SystemsRow" type="HSplitContainer" parent="Results/VBoxContainer"]
+offset_top = 113.0
+offset_right = 210.0
+offset_bottom = 132.0
+
+[node name="SystemsLabel" type="Label" parent="Results/VBoxContainer/SystemsRow"]
+offset_right = 128.0
+offset_bottom = 19.0
+grow_horizontal = 2
+text = "Systems:"
+vertical_alignment = 2
+
+[node name="Systems" type="Label" parent="Results/VBoxContainer/SystemsRow"]
+offset_left = 140.0
+offset_right = 210.0
+offset_bottom = 19.0
+grow_horizontal = 2
+text = "32
+"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="FleetRow" type="HSplitContainer" parent="Results/VBoxContainer"]
+offset_top = 164.0
+offset_right = 210.0
+offset_bottom = 183.0
+
+[node name="FleetLabel" type="Label" parent="Results/VBoxContainer/FleetRow"]
+offset_right = 96.0
+offset_bottom = 19.0
+grow_horizontal = 2
+text = "Fleet:"
+vertical_alignment = 2
+
+[node name="Fleet" type="Label" parent="Results/VBoxContainer/FleetRow"]
+offset_left = 108.0
+offset_right = 210.0
+offset_bottom = 19.0
+grow_horizontal = 2
+text = "129"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -68.0
+offset_top = -64.0
+offset_right = 68.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "New Game
+"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

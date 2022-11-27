@@ -1,0 +1,11 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://ddp6tojcqv475"]
+
+[ext_resource type="Texture2D" uid="uid://dmy48fb4m2squ" path="res://sprites/frame.png" id="1_wppja"]
+
+[resource]
+texture = ExtResource("1_wppja")
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 8.0
+margin_bottom = 8.0
+region_rect = Rect2(0, 0, 24, 24)
